@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FilmForge.Entities.Context;
 
-internal class FilmForgeDbContext : DbContext
+public class FilmForgeDbContext : DbContext
 {
     public FilmForgeDbContext(DbContextOptions<FilmForgeDbContext> options)
         : base(options) { }
