@@ -1,13 +1,10 @@
 using FilmForge.Entities.Context;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Service.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddScoped<ISecurityService, SecurityService>();
 
 builder.Services.AddControllers();
 
