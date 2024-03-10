@@ -26,6 +26,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FilmForge.Entities\FilmForge.Entities.csproj" />
+    <ProjectReference Include="..\FilmForge.Models\FilmForge.Models.csproj" />
+    <ProjectReference Include="..\FilmForge.Repository\FilmForge.Repository.csproj" />
+    <ProjectReference Include="..\FilmForge.Service\FilmForge.Service.csproj" />
   </ItemGroup>
 
 </Project>

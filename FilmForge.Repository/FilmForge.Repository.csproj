@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FilmForge.Entities\FilmForge.Entities.csproj" />
+    <ProjectReference Include="..\FilmForge.Models\FilmForge.Models.csproj" />
+  </ItemGroup>
+
 </Project>
