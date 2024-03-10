@@ -6,7 +6,6 @@ public class Director : BaseEntity
 {
     public string Name { get; set; }
     public string Bio { get; set; }
-
     public int UserId { get; set; }
     public User User { get; set; }
 
