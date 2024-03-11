@@ -1,35 +1,16 @@
-using FilmForge.Entities.Context;
-using Microsoft.EntityFrameworkCore;
-using Service.Security;
+namespace FilmForge;
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddScoped<ISecurityService, SecurityService>();
-
-builder.Services.AddControllers();
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-builder.Services.AddDbContext<FilmForgeDbContext>(
-    options =>
-        options.UseSqlServer(connectionString)
-    );
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+public class Program
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    private static void Main(string[] args)
+    {
+        CreateHostBuilder(args).Build().Run();
+    }
+
+    private static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
