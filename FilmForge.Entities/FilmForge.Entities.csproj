@@ -20,10 +20,11 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FilmForge.Models\FilmForge.Models.csproj" />
+    <ProjectReference Include="..\FilmForge.Common\FilmForge.Common.csproj" />
   </ItemGroup>
 
 </Project>
