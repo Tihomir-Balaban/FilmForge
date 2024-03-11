@@ -1,5 +1,5 @@
 ﻿
-using FilmForge.Models.Dto;
+using FilmForge.Models.Dtos;
 
 namespace Service.Security;
 
