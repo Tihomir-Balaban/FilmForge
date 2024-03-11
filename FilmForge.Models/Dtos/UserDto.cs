@@ -1,4 +1,4 @@
-﻿using FilmForge.Models.Enum;
+﻿using FilmForge.Common.Enum;
 
 namespace FilmForge.Models.Dtos;
 
