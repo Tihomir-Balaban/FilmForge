@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using FilmForge.Entities.EntityModels;
-using FilmForge.Models.Dtos;
+﻿using FilmForge.Entities.EntityModels;
 
 namespace FilmForge.Models.Profiles
 {

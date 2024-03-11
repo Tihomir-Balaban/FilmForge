@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-
-namespace FilmForge.Entities.Context;
+﻿namespace FilmForge.Entities.Context;
 
 public class FilmForgeDbContextFactory : IDesignTimeDbContextFactory<FilmForgeDbContext>
 {

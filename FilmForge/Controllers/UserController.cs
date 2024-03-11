@@ -1,8 +1,4 @@
-﻿using FilmForge.Models.Dtos;
-using FilmForge.Service.UserService;
-using Microsoft.AspNetCore.Mvc;
-
-namespace FilmForge.Controllers;
+﻿namespace FilmForge.Controllers;
 
 [ApiController]
 [Route("[controller]")]

@@ -1,15 +1,4 @@
-﻿using AutoMapper;
-using FilmForge.Entities.Context;
-using FilmForge.Entities.EntityModels;
-using FilmForge.Models.Dtos;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Service.Security;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Service.Security;
 
 namespace FilmForge.Repository.UserRepository;
 

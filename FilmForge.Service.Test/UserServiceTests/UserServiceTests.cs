@@ -1,16 +1,7 @@
-﻿using AutoMapper;
-using FilmForge.Entities.EntityModels;
-using FilmForge.Models.Dtos;
-using FilmForge.Repository.UserRepository;
-using FilmForge.Service.UserService;
-using Microsoft.Extensions.Logging;
-using Moq;
-
-namespace FilmForge.Service.Test.UserServiceTests;
+﻿namespace FilmForge.Service.Test.UserServiceTests;
 
 public class UserServiceTests : BaseUserServiceTests
 {
-
     [Fact]
     public async Task CreateAsync_ShouldReturnUserDto_WhenUserIsCreated()
     {

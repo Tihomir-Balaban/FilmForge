@@ -1,17 +1,6 @@
-﻿using AutoMapper;
-using Bogus;
-using FilmForge.Common.Enum;
-using FilmForge.Entities.EntityModels;
-using FilmForge.Models.Dtos;
+﻿using FilmForge.Common.Enum;
 using FilmForge.Repository.UserRepository;
 using US = FilmForge.Service.UserService;
-using Microsoft.Extensions.Logging;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FilmForge.Service.Test.UserServiceTests;
 

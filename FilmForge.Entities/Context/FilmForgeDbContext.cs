@@ -1,6 +1,4 @@
 ﻿using FilmForge.Entities.EntityModels;
-using FilmForge.Entities.EntityModels.Base;
-using Microsoft.EntityFrameworkCore;
 
 namespace FilmForge.Entities.Context;
 

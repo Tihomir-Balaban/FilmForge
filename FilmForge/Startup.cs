@@ -1,7 +1,6 @@
 ﻿using FilmForge.Entities.Context;
 using FilmForge.JWT;
 using FilmForge.Repository.UserRepository;
-using FilmForge.Service.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

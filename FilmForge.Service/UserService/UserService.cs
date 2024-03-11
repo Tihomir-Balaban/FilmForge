@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using FilmForge.Entities.EntityModels;
-using FilmForge.Models.Dtos;
-using FilmForge.Repository.UserRepository;
-using Microsoft.Extensions.Logging;
+﻿using FilmForge.Repository.UserRepository;
 
 namespace FilmForge.Service.UserService;
 
