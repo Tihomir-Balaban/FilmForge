@@ -89,7 +89,7 @@ public class UserRepository : IUserRepository
 
             if (users == null)
             {
-                logger.LogWarning($"No Users not found.");
+                logger.LogWarning("No Users not found.");
 
                 return null;
             }
