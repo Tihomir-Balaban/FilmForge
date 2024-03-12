@@ -1,6 +1,7 @@
 ﻿using FilmForge.Common.Enum;
 using FilmForge.Entities.Context;
 using FilmForge.Entities.EntityModels;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace FilmForge.Entities.Initializer;
@@ -24,14 +25,18 @@ public static class DbInitializer
 
     private static User GenerateInitSuperAdminUser()
     {
-        var str = "pw123pw";
-
-        return new User
+        using (var hmac = new HMACSHA512())
         {
-            Name = "Tihomir Balaban",
-            Email = "tihomir@balaban.com",
-            Password = Encoding.ASCII.GetBytes(str),
-            Role = UserRole.SuperAdministrator
-        };
+            return new User
+            {
+                Name = "Tihomir Balaban",
+                Email = "tihomir@balaban.com",
+                Role = UserRole.SuperAdministrator,
+                Salt = hmac.Key,
+                Password = hmac.ComputeHash(Encoding.UTF8.GetBytes("pw123pw")),
+                CreatedOn = DateTime.Now,
+                ModifiedOn = DateTime.Now
+            };
+        }
     }
 }
