@@ -1,5 +1,7 @@
 ﻿using FilmForge.Common.Enum;
+using FilmForge.Models.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Service.Security;
 
 namespace FilmForge.Controllers;
 
@@ -8,13 +10,16 @@ namespace FilmForge.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService userService;
+    private readonly ISecurityService securityService;
     private readonly ILogger<UserController> logger;
 
     public UserController(
         IUserService userService,
+        ISecurityService securityService,
         ILogger<UserController> logger)
     {
         this.userService = userService;
+        this.securityService = securityService;
         this.logger = logger;
     }
 
@@ -27,15 +32,15 @@ public class UserController : ControllerBase
     ///         {
     ///             "id": int,
     ///             "name": string,
-    ///             "email": int,
-    ///             "password": int,
+    ///             "email": string,
+    ///             "password": string,
     ///             "role": int
     ///         },
     ///         {
     ///             "id": int,
     ///             "name": string,
-    ///             "email": int,
-    ///             "password": int,
+    ///             "email": string,
+    ///             "password": string,
     ///             "role": int
     ///         },
     ///         {
@@ -86,8 +91,8 @@ public class UserController : ControllerBase
     ///     {
     ///         "id": int,
     ///         "name": string,
-    ///         "email": int,
-    ///         "password": int,
+    ///         "email": string,
+    ///         "password": string,
     ///         "role": int
     ///     }
     /// </example>
@@ -135,8 +140,8 @@ public class UserController : ControllerBase
     ///     {
     ///         "id": int,
     ///         "name": string,
-    ///         "email": int,
-    ///         "password": int,
+    ///         "email": string,
+    ///         "password": string,
     ///         "role": int
     ///     }
     /// </example>
@@ -155,11 +160,9 @@ public class UserController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-
                 logger.LogInformation("Triggering User Service: CreateAsync");
 
                 var createdUser = await userService.CreateAsync(userDto);
-
 
                 return CreatedAtAction(
                     nameof(GetUserById),
@@ -181,6 +184,32 @@ public class UserController : ControllerBase
         }
     }
 
+
+    /// <summary>
+    /// Will log user in by username and password.
+    /// </summary>
+    /// <example>
+    ///     Example of UserDto in json form:
+    ///     {
+    ///         username: "UserName",
+    ///         password: "Password",
+    ///     }
+    /// </example>
+    /// <param name="login"></param>
+    // POST: User/login
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequest login)
+    {
+        var user = await userService.LoginUserAsync(login);
+
+        if (user == null)
+            return Unauthorized();
+
+        var tokenString = securityService.JwtSecurityHandler(user);
+
+        return Ok(new { Token = tokenString });
+    }
+
     /// <summary>
     /// Updates an existing user.
     /// </summary>
@@ -189,8 +218,8 @@ public class UserController : ControllerBase
     ///     {
     ///         "id": int,
     ///         "name": string,
-    ///         "email": int,
-    ///         "password": int,
+    ///         "email": string,
+    ///         "password": string,
     ///         "role": int
     ///     }
     /// </example>
