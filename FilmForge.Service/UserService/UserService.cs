@@ -1,4 +1,5 @@
-﻿using FilmForge.Repository.UserRepository;
+﻿using FilmForge.Models.Utility;
+using FilmForge.Repository.UserRepository;
 
 namespace FilmForge.Service.UserService;
 
@@ -21,7 +22,10 @@ public class UserService : IUserService
     {
         try
         {
+            (userDto.CreatedOn, userDto.ModifiedOn) = (DateTime.Now, DateTime.Now);
+
             logger.LogInformation($"Mapping UserDto to User (Entity) in UserService CreateAsync");
+            
             var user = mapper.Map<User>(userDto);
 
             return await userRepository.CreateAsync(user, userDto);
@@ -33,6 +37,9 @@ public class UserService : IUserService
             throw new ApplicationException(e.Message);
         }
     }
+
+    public async Task<UserDto> LoginUserAsync(LoginRequest login)
+        => await userRepository.GetUserByEmailAndPassord(login.Email, login.Password);
 
     public async Task<bool> DeleteByIdAsync(int id)
         => await userRepository.DeleteByIdAsync(id);
