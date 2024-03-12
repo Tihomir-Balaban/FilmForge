@@ -1,4 +1,5 @@
 ﻿using FilmForge.Entities.Context;
+using FilmForge.Entities.Initializer;
 using FilmForge.JWT;
 using FilmForge.Repository.UserRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -77,8 +78,9 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
 
-            // TODO: Implement data Seeder
-            // DbInitializer.Initialize(context);
+            // DONE: Init User
+            // TODO: Implement data Seeding
+            DbInitializer.Initialize(context);
         }
 
         app.UseHttpsRedirection();
