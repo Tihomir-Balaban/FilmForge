@@ -1,5 +1,5 @@
 ﻿using FilmForge.Common.Enum;
-using FilmForge.Models.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FilmForge.Controllers;
 
@@ -47,6 +47,7 @@ public class UserController : ControllerBase
     /// <response code="400">Returns error message with what happened</response>
     /// <response code="404">Returns message if that there are no users in the Database</response>
     // GET: /User/all
+    [Authorize]
     [HttpGet("all")]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
     {
@@ -69,7 +70,7 @@ public class UserController : ControllerBase
         }
         catch (Exception e)
         {
-            logger.LogError($"Error caught: {typeof(e.InnerException)}");
+            logger.LogError($"Error caught: {nameof(e.InnerException)}");
 
             BadRequest(e.Message);
 
@@ -95,6 +96,7 @@ public class UserController : ControllerBase
     /// <response code="400">Returns error message with what happened</response>
     /// <response code="404">If no user is found with the specified ID</response>
     // GET: /User/{id}
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDto>> GetUserById(int id)
     {
@@ -117,7 +119,7 @@ public class UserController : ControllerBase
         }
         catch (Exception e)
         {
-            logger.LogError($"Error caught: {typeof(e.InnerException)}");
+            logger.LogError($"Error caught: {nameof(e.InnerException)}");
 
             BadRequest(e.Message);
 
@@ -141,7 +143,9 @@ public class UserController : ControllerBase
     /// <param name="userDto">The user data transfer object.</param>
     /// <response code="201">Returns the newly created user</response>
     /// <response code="400">Returns error message with what happened</response>
+    /// <response code="401">Returns when user not authorized to use this endpoint</response>
     // POST: /User/add
+    [Authorize(Roles = nameof(UserRole.SuperAdministrator))]
     [HttpPost("add")]
     public async Task<ActionResult<UserDto>> CreateUser([FromBody] UserDto userDto)
     {
@@ -149,18 +153,27 @@ public class UserController : ControllerBase
 
         try
         {
-            logger.LogInformation("Triggering User Service: CreateAsync");
+            if (ModelState.IsValid)
+            {
 
-            var createdUser = await userService.CreateAsync(userDto);
+                logger.LogInformation("Triggering User Service: CreateAsync");
 
-            return CreatedAtAction(
-                nameof(GetUserById),
-                new { id = createdUser.Id });
+                var createdUser = await userService.CreateAsync(userDto);
+
+
+                return CreatedAtAction(
+                    nameof(GetUserById),
+                    new { id = createdUser.Id });
+            }
+
+            logger.LogError("Model didn't pass validation");
+
+            return BadRequest(ModelState);
         }
         catch (Exception e)
         {
             
-            logger.LogError($"Error caught: {typeof(e.InnerException)}");
+            logger.LogError($"Error caught: {nameof(e.InnerException)}");
 
             BadRequest(e.Message);
 
@@ -185,7 +198,9 @@ public class UserController : ControllerBase
     /// <param name="userDto">The updated user data transfer object.</param>
     /// <response code="200">If the user was updated successfully</response>
     /// <response code="400">If the ID does not match the userDto ID or some other error message with what happened</response>
+    /// <response code="401">Returns when user not authorized to use this endpoint</response>
     // PUT: /User/update/{id}
+    [Authorize(Roles = nameof(UserRole.SuperAdministrator))]
     [HttpPut("update/{id}")]
     public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDto userDto)
     {
@@ -209,7 +224,7 @@ public class UserController : ControllerBase
         catch (Exception e)
         {
 
-            logger.LogError($"Error caught: {typeof(e.InnerException)}");
+            logger.LogError($"Error caught: {nameof(e.InnerException)}");
 
             BadRequest(e.Message);
 
@@ -223,7 +238,9 @@ public class UserController : ControllerBase
     /// <param name="id">The ID of the user to delete.</param>
     /// <response code="200">Returns true if the user was deleted successfully</response>
     /// <response code="400">Returns error message with what happened</response>
+    /// <response code="401">Returns when user not authorized to use this endpoint</response>
     // DELETE: /User/delete/{id}
+    [Authorize(Roles = nameof(UserRole.SuperAdministrator))]
     [HttpDelete("delete/{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
@@ -247,7 +264,7 @@ public class UserController : ControllerBase
         catch (Exception e)
         {
 
-            logger.LogError($"Error caught: {typeof(e.InnerException)}");
+            logger.LogError($"Error caught: {nameof(e.InnerException)}");
 
             BadRequest(e.Message);
 
