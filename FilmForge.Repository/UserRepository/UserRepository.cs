@@ -163,7 +163,6 @@ public class UserRepository : IUserRepository
 
             logger.LogInformation($"User retrieved successfully with Id: {userDto.Id}, Username: {userDto.Name} and Email: {userDto.Email}.");
 
-
             return userDto;
         }
         catch (Exception e)
@@ -191,8 +190,12 @@ public class UserRepository : IUserRepository
                 return null;
             }
 
+            user.CreatedOn = userEntity.CreatedOn;
+            user.ModifiedOn = DateTime.Now;
+            user.Password = userEntity.Password;
+            user.Salt = userEntity.Salt;
+
             userEntity = mapper.Map<User>(user);
-            userEntity.ModifiedOn = DateTime.Now;
 
             dbContext.Entry(userEntity).State = EntityState.Modified;
             await dbContext.SaveChangesAsync();
