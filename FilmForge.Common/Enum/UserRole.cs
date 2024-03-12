@@ -2,7 +2,7 @@
 
 public enum UserRole
 {
-    SuperAdministratior = 0,
+    SuperAdministrator = 0,
     Director = 1,
     Actor = 2
 }
