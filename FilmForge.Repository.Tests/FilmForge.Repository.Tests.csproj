@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <PackageReference Include="Bogus" Version="35.5.0" />
-    <PackageReference Include="Bogus.Hollywood" Version="35.5.0" />
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="Moq" Version="4.20.70" />
@@ -23,6 +22,14 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FilmForge.Common\FilmForge.Common.csproj" />
+    <ProjectReference Include="..\FilmForge.Entities\FilmForge.Entities.csproj" />
+    <ProjectReference Include="..\FilmForge.Models\FilmForge.Models.csproj" />
+    <ProjectReference Include="..\FilmForge.Repository\FilmForge.Repository.csproj" />
+    <ProjectReference Include="..\FilmForge.Service.Security\FilmForge.Service.Security.csproj" />
   </ItemGroup>
 
 </Project>
