@@ -1,5 +1,7 @@
 ﻿using FilmForge.Entities.EntityModels;
+using FilmForge.Models.Dtos;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FilmForge.Models.Profiles
 {
@@ -14,9 +16,23 @@ namespace FilmForge.Models.Profiles
 
         private void CreateReverseMaps()
         {
-            // This is where any reverse mapable models are profiled
-            // CreateMap<TSource, TDest>()
-            //    .ReverseMap();
+            CreateMap<ActorDto, Actor>()
+               .ReverseMap();
+
+            CreateMap<DirectorDto, Director>()
+            .ReverseMap();
+
+            CreateMap<MovieDto, Movie>()
+               .ReverseMap();
+
+            CreateMap<GenreDto, Genre>()
+               .ReverseMap();
+
+            CreateMap<RatingDto, Rating>()
+               .ReverseMap();
+
+            CreateMap<ReviewDto, Review>()
+               .ReverseMap();
         }
 
         private void CreateDto2EntityMaps()
