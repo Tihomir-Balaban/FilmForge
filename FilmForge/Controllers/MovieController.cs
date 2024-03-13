@@ -1,8 +1,5 @@
 ﻿using FilmForge.Common.Enum;
-using FilmForge.Models.Utility;
-using FilmForge.Service.MovieService;
 using Microsoft.AspNetCore.Authorization;
-using Service.Security;
 
 namespace FilmForge.Controllers;
 
