@@ -1,0 +1,13 @@
+﻿global using AutoMapper;
+global using FilmForge.Models.Dtos;
+global using FilmForge.Service.ActorService;
+global using FilmForge.Service.DirectorService;
+global using FilmForge.Service.GenreService;
+global using FilmForge.Service.MovieService;
+global using FilmForge.Service.RatingService;
+global using FilmForge.Service.ReviewService;
+global using FilmForge.Service.UserService;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.Logging;
+global using System;
+global using System.Collections.Generic;

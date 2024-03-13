@@ -1,0 +1,7 @@
+﻿global using AutoMapper;
+global using Bogus;
+global using Bogus.Hollywood;
+global using FilmForge.Entities.EntityModels;
+global using FilmForge.Models.Dtos;
+global using Microsoft.Extensions.Logging;
+global using Moq;
