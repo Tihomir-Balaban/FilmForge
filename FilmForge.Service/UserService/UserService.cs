@@ -9,7 +9,8 @@ public class UserService : IUserService
     private readonly ILogger<UserService> logger;
     private readonly IMapper mapper;
 
-    public UserService(IUserRepository userRepository,
+    public UserService(
+        IUserRepository userRepository,
         ILogger<UserService> logger,
         IMapper mapper)
     {
