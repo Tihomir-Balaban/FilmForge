@@ -14,9 +14,11 @@ public class BaseUserServiceTests
 
     private protected void InitService()
     {
-        UserService = new US.UserService(UserRepositoryMock.Object, LoggerMock.Object, MapperMock.Object);
+        UserService = new(
+            UserRepositoryMock.Object,
+            LoggerMock.Object,
+            MapperMock.Object);
     }
-
 
     private protected UserDto[] ArrangeUserDtos(int amount)
     {
