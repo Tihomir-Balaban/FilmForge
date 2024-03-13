@@ -1,29 +1,67 @@
+using FilmForge.Repository.ReviewRepository;
+
 namespace FilmForge.Service.ReviewService;
 
 public class ReviewService : IReviewService
 {
-    public Task<ReviewDto> CreateAsync(ReviewDto dto)
+    private readonly IReviewRepository reviewRepository;
+    private readonly ILogger<ReviewService> logger;
+    private readonly IMapper mapper;
+
+    public ReviewService(
+        IReviewRepository reviewRepository,
+        ILogger<ReviewService> logger,
+        IMapper mapper)
     {
-        throw new NotImplementedException();
+        this.reviewRepository = reviewRepository;
+        this.logger = logger;
+        this.mapper = mapper;
     }
 
-    public Task<bool> DeleteByIdAsync(int id)
+    public async Task<ReviewDto> CreateAsync(ReviewDto reviewDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            (reviewDto.CreatedOn, reviewDto.ModifiedOn) = (DateTime.Now, DateTime.Now);
+
+            logger.LogInformation($"Mapping ReviewDto to Review (Entity) in ReviewService CreateAsync");
+
+            var review = mapper.Map<Review>(reviewDto);
+
+            return await reviewRepository.CreateAsync(review, reviewDto);
+        }
+        catch (Exception e)
+        {
+
+            logger.LogError(e, $"Failed to map Review. Error: {e.Message}.");
+
+            throw new ApplicationException(e.Message);
+        }
     }
 
-    public Task<ReviewDto[]> GetAllAsync()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<bool> DeleteByIdAsync(int id)
+        => await reviewRepository.DeleteByIdAsync(id);
 
-    public Task<ReviewDto> GetByIdAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<ReviewDto[]> GetAllAsync()
+        => await reviewRepository.GetAllAsync();
 
-    public Task<ReviewDto> UpdateAsync(int id, ReviewDto dto)
+    public async Task<ReviewDto> GetByIdAsync(int id)
+        => await reviewRepository.GetByIdAsync(id);
+
+    public async Task<ReviewDto> UpdateAsync(int id, ReviewDto reviewDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            logger.LogInformation($"Mapping ReviewDto to Review (Entity) in ReviewService UpdateAsync");
+            var review = mapper.Map<Review>(reviewDto);
+
+            return await reviewRepository.UpdateAsync(id, review);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, $"Failed to map Review. Error: {e.Message}.");
+
+            throw new ApplicationException(e.Message);
+        }
     }
 }
