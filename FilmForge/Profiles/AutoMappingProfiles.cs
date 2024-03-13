@@ -1,7 +1,5 @@
 ﻿using FilmForge.Entities.EntityModels;
-using FilmForge.Models.Dtos;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace FilmForge.Models.Profiles
 {
