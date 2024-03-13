@@ -2,29 +2,167 @@
 {
     public class MovieRepository : IMovieRepository
     {
-        public Task<MovieDto> CreateAsync(Movie entity, MovieDto dto)
+        private readonly FilmForgeDbContext dbContext;
+        private readonly ILogger<MovieRepository> logger;
+        private readonly IMapper mapper;
+
+        public MovieRepository(
+            FilmForgeDbContext dbContext,
+            ILogger<MovieRepository> logger,
+            IMapper mapper)
         {
-            throw new NotImplementedException();
+            this.dbContext = dbContext;
+            this.logger = logger;
+            this.mapper = mapper;
         }
 
-        public Task<bool> DeleteByIdAsync(int id)
+        public async Task<MovieDto> CreateAsync(Movie movie, MovieDto movieDto)
         {
-            throw new NotImplementedException();
+            logger.LogInformation("Adding a new Movie.");
+            try
+            {
+                await dbContext.AddAsync(movie);
+                await dbContext.SaveChangesAsync();
+
+                logger.LogInformation($"Movie created successfully with Name: {movie.Name}.");
+
+                return mapper.Map<MovieDto>(movie);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Failed to add Movie. Error: {e.Message}.");
+
+                throw new ApplicationException(e.Message);
+            }
         }
 
-        public Task<MovieDto[]> GetAllAsync()
+        public async Task<bool> DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            logger.LogInformation($"Atempting to delete Movie by id: {id}.");
+
+            try
+            {
+                var movie = await dbContext
+                    .Movies
+                    .FindAsync(id);
+
+                if (movie == null)
+                {
+                    logger.LogWarning($"Movie with ID: {id} not found.");
+
+                    return false;
+                }
+
+                dbContext.Movies.Remove(movie);
+                await dbContext.SaveChangesAsync();
+
+                logger.LogInformation($"Movie with id: {id} successfully deleted.");
+
+                return true;
+
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Failed to delete Movie with id: {id}. Error: {e.Message}.");
+
+                throw new ApplicationException(e.Message);
+            }
         }
 
-        public Task<MovieDto> GetByIdAsync(int id)
+        public async Task<MovieDto[]> GetAllAsync()
         {
-            throw new NotImplementedException();
+            logger.LogInformation("Getting all Movies.");
+
+            try
+            {
+                var movies = await dbContext
+                    .Movies
+                    .ToArrayAsync();
+
+                if (movies == null)
+                {
+                    logger.LogWarning("No Movies not found.");
+
+                    return null;
+                }
+
+                var movieDtos = mapper.Map<MovieDto[]>(movies);
+
+                logger.LogInformation($"Retrieved all {movieDtos.Count()} Movies.");
+
+                return movieDtos;
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Failed to retrieved all Movie. Error: {e.Message}.");
+
+                throw new ApplicationException(e.Message);
+            }
         }
 
-        public Task<MovieDto> UpdateAsync(int id, Movie entity)
+        public async Task<MovieDto> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            logger.LogInformation($"Getting Movie with id: {id}.");
+
+            try
+            {
+                var movie = await dbContext
+                    .Movies
+                    .FindAsync(id);
+
+                if (movie == null)
+                {
+                    logger.LogWarning($"Movie with id: {id} not found.");
+
+                    return null;
+                }
+
+                logger.LogInformation($"Movie found successfully with Id: {movie.Id} and Name: {movie.Name}.");
+
+                return mapper.Map<MovieDto>(movie);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Failed to find Movie with id {id}. Error: {e.Message}.");
+
+                throw new ApplicationException(e.Message);
+            }
+        }
+
+        public async Task<MovieDto> UpdateAsync(int id, Movie movie)
+        {
+            logger.LogInformation($"Updating Movie: {movie.Name}.");
+
+            try
+            {
+                var movieEntity = await dbContext
+                    .Movies
+                    .FindAsync(movie.Id);
+
+                if (movie == null)
+                {
+                    logger.LogWarning($"Movie with id: {id} not found.");
+
+                    return null;
+                }
+
+                movie.CreatedOn = movieEntity.CreatedOn;
+                movie.ModifiedOn = DateTime.Now;
+
+                movieEntity = mapper.Map<Movie>(movie);
+
+                dbContext.Entry(movieEntity).State = EntityState.Modified;
+                await dbContext.SaveChangesAsync();
+
+                logger.LogInformation($"Movie updated successfully with Name: {movie.Name}.");
+
+                return mapper.Map<MovieDto>(movieEntity);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Failed to update Movie. Error: {e.Message}.");
+
+                throw new ApplicationException(e.Message);
+            }
         }
     }
-}
