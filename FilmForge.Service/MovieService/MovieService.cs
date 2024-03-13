@@ -1,29 +1,67 @@
+using FilmForge.Repository.MovieRepository;
+
 namespace FilmForge.Service.MovieService;
 
 public class MovieService : IMovieService
 {
-    public Task<MovieDto> CreateAsync(MovieDto dto)
+    private readonly IMovieRepository movieRepository;
+    private readonly ILogger<MovieService> logger;
+    private readonly IMapper mapper;
+
+    public MovieService(
+        IMovieRepository movieRepository,
+        ILogger<MovieService> logger,
+        IMapper mapper)
     {
-        throw new NotImplementedException();
+        this.movieRepository = movieRepository;
+        this.logger = logger;
+        this.mapper = mapper;
     }
 
-    public Task<bool> DeleteByIdAsync(int id)
+    public async Task<MovieDto> CreateAsync(MovieDto movieDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            (movieDto.CreatedOn, movieDto.ModifiedOn) = (DateTime.Now, DateTime.Now);
+
+            logger.LogInformation($"Mapping MovieDto to Movie (Entity) in MovieService CreateAsync");
+
+            var movie = mapper.Map<Movie>(movieDto);
+
+            return await movieRepository.CreateAsync(movie, movieDto);
+        }
+        catch (Exception e)
+        {
+
+            logger.LogError(e, $"Failed to map Movie. Error: {e.Message}.");
+
+            throw new ApplicationException(e.Message);
+        }
     }
 
-    public Task<MovieDto[]> GetAllAsync()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<bool> DeleteByIdAsync(int id)
+        => await movieRepository.DeleteByIdAsync(id);
 
-    public Task<MovieDto> GetByIdAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<MovieDto[]> GetAllAsync()
+        => await movieRepository.GetAllAsync();
 
-    public Task<MovieDto> UpdateAsync(int id, MovieDto dto)
+    public async Task<MovieDto> GetByIdAsync(int id)
+        => await movieRepository.GetByIdAsync(id);
+
+    public async Task<MovieDto> UpdateAsync(int id, MovieDto movieDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            logger.LogInformation($"Mapping MovieDto to Movie (Entity) in MovieService UpdateAsync");
+            var movie = mapper.Map<Movie>(movieDto);
+
+            return await movieRepository.UpdateAsync(id, movie);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, $"Failed to map Movie. Error: {e.Message}.");
+
+            throw new ApplicationException(e.Message);
+        }
     }
 }
