@@ -231,7 +231,7 @@ public class UserController : ControllerBase
     // PUT: /User/update/{id}
     [Authorize(Roles = nameof(UserRole.SuperAdministrator))]
     [HttpPut("update/{id}")]
-    public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDto userDto)
+    public async Task<ActionResult<UserDto>> UpdateUser(int id, [FromBody] UserDto userDto)
     {
         logger.LogInformation($"Triggered Endpoint PUT:update/{id}");
 
@@ -271,7 +271,7 @@ public class UserController : ControllerBase
     // DELETE: /User/delete/{id}
     [Authorize(Roles = nameof(UserRole.SuperAdministrator))]
     [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> DeleteUser(int id)
+    public async Task<ActionResult<bool>> DeleteUser(int id)
     {
         logger.LogInformation($"Triggered Endpoint DELETE:delete/{id}");
 
