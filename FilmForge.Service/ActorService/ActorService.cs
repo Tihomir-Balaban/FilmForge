@@ -1,29 +1,67 @@
+using FilmForge.Repository.ActorRepository;
+
 namespace FilmForge.Service.ActorService;
 
 public class ActorService : IActorService
 {
-    public Task<ActorDto> CreateAsync(ActorDto dto)
+    private readonly IActorRepository actorRepository;
+    private readonly ILogger<ActorService> logger;
+    private readonly IMapper mapper;
+
+    public ActorService(
+        IActorRepository actorRepository,
+        ILogger<ActorService> logger,
+        IMapper mapper)
     {
-        throw new NotImplementedException();
+        this.actorRepository = actorRepository;
+        this.logger = logger;
+        this.mapper = mapper;
     }
 
-    public Task<bool> DeleteByIdAsync(int id)
+    public async Task<ActorDto> CreateAsync(ActorDto actorDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            (actorDto.CreatedOn, actorDto.ModifiedOn) = (DateTime.Now, DateTime.Now);
+
+            logger.LogInformation($"Mapping ActorDto to Actor (Entity) in UserService CreateAsync");
+
+            var actor = mapper.Map<Actor>(actorDto);
+
+            return await actorRepository.CreateAsync(actor, actorDto);
+        }
+        catch (Exception e)
+        {
+
+            logger.LogError(e, $"Failed to map Actor. Error: {e.Message}.");
+
+            throw new ApplicationException(e.Message);
+        }
     }
 
-    public Task<ActorDto[]> GetAllAsync()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<bool> DeleteByIdAsync(int id)
+        => await actorRepository.DeleteByIdAsync(id);
 
-    public Task<ActorDto> GetByIdAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<ActorDto[]> GetAllAsync()
+        => await actorRepository.GetAllAsync();
 
-    public Task<ActorDto> UpdateAsync(int id, ActorDto dto)
+    public async Task<ActorDto> GetByIdAsync(int id)
+        => await actorRepository.GetByIdAsync(id);
+
+    public async Task<ActorDto> UpdateAsync(int id, ActorDto actorDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            logger.LogInformation($"Mapping ActorDto to Actor (Entity) in UserService UpdateAsync");
+            var actor = mapper.Map<Actor>(actorDto);
+
+            return await actorRepository.UpdateAsync(id, actor);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, $"Failed to map Actor. Error: {e.Message}.");
+
+            throw new ApplicationException(e.Message);
+        }
     }
 }
