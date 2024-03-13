@@ -56,7 +56,7 @@ public class UserController : ControllerBase
     [HttpGet("all")]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
     {
-        logger.LogInformation("Triggered Endpoint GET: users/all");
+        logger.LogInformation("Triggered Endpoint GET: user/all");
 
         try
         {
@@ -105,7 +105,7 @@ public class UserController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDto>> GetUserById(int id)
     {
-        logger.LogInformation($"Triggered Endpoint GET:/User/{id}");
+        logger.LogInformation($"Triggered Endpoint GET: user/{id}");
 
         try
         {
@@ -154,7 +154,7 @@ public class UserController : ControllerBase
     [HttpPost("add")]
     public async Task<ActionResult<UserDto>> CreateUser([FromBody] UserDto userDto)
     {
-        logger.LogInformation("Triggered Endpoint POST:/User/add");
+        logger.LogInformation("Triggered Endpoint POST: user/add");
 
         try
         {
@@ -183,7 +183,6 @@ public class UserController : ControllerBase
             throw new ApplicationException(e.Message);
         }
     }
-
 
     /// <summary>
     /// Will log user in by username and password.
@@ -233,7 +232,7 @@ public class UserController : ControllerBase
     [HttpPut("update/{id}")]
     public async Task<ActionResult<UserDto>> UpdateUser(int id, [FromBody] UserDto userDto)
     {
-        logger.LogInformation($"Triggered Endpoint PUT:update/{id}");
+        logger.LogInformation($"Triggered Endpoint PUT: user/update/{id}");
 
         try
         {
@@ -273,7 +272,7 @@ public class UserController : ControllerBase
     [HttpDelete("delete/{id}")]
     public async Task<ActionResult<bool>> DeleteUser(int id)
     {
-        logger.LogInformation($"Triggered Endpoint DELETE:delete/{id}");
+        logger.LogInformation($"Triggered Endpoint DELETE: user/delete/{id}");
 
         try
         {
