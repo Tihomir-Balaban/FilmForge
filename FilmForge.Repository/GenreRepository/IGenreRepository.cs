@@ -1,4 +1,4 @@
-﻿namespace FilmForge.Repository.ActorRepository;
+﻿namespace FilmForge.Repository.GenreRepository;
 
 public interface IGenreRepository : IGenericRepository<GenreDto, Genre>
 {
