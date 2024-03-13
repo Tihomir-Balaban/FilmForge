@@ -46,7 +46,7 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> DeleteByIdAsync(int id)
     {
-        logger.LogInformation($"Atempting to deleting User by id: {id}.");
+        logger.LogInformation($"Atempting to delete User by id: {id}.");
 
         try
         {
@@ -56,7 +56,7 @@ public class UserRepository : IUserRepository
 
             if (user == null)
             {
-                logger.LogWarning($"Solar power plant with ID: {id} not found.");
+                logger.LogWarning($"User with ID: {id} not found.");
 
                 return false;
             }
@@ -71,7 +71,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception e)
         {
-            logger.LogError(e, $"Failed to delete Userwith id: {id}. Error: {e.Message}.");
+            logger.LogError(e, $"Failed to delete User with id: {id}. Error: {e.Message}.");
 
             throw new ApplicationException(e.Message);
         }
@@ -102,7 +102,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception e)
         {
-            logger.LogError(e, $"Failed to add User. Error: {e.Message}.");
+            logger.LogError(e, $"Failed to retrieved all User. Error: {e.Message}.");
 
             throw new ApplicationException(e.Message);
         }
@@ -200,7 +200,7 @@ public class UserRepository : IUserRepository
             dbContext.Entry(userEntity).State = EntityState.Modified;
             await dbContext.SaveChangesAsync();
 
-            logger.LogInformation($"User updated successfully with Username: {user.Name}.");
+            logger.LogInformation($"User updated successfully with Name: {user.Name}.");
 
             return mapper.Map<UserDto>(userEntity);
         }
