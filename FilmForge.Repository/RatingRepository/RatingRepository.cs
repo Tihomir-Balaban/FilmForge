@@ -24,7 +24,7 @@ public class RatingRepository : IRatingRepository
             await dbContext.AddAsync(rating);
             await dbContext.SaveChangesAsync();
 
-            logger.LogInformation($"Rating created successfully with Name: {rating.Name}.");
+            logger.LogInformation($"Rating created successfully with Userid: {rating.UserId} and MovieId: {rating.MovieId}.");
 
             return mapper.Map<RatingDto>(rating);
         }
@@ -117,7 +117,7 @@ public class RatingRepository : IRatingRepository
                 return null;
             }
 
-            logger.LogInformation($"Rating found successfully with Id: {rating.Id} and Name: {rating.Name}.");
+            logger.LogInformation($"Rating found successfully with Id: {rating.Id} and MovieId: {rating.MovieId}.");
 
             return mapper.Map<RatingDto>(rating);
         }
@@ -131,7 +131,7 @@ public class RatingRepository : IRatingRepository
 
     public async Task<RatingDto> UpdateAsync(int id, Rating rating)
     {
-        logger.LogInformation($"Updating Rating: {rating.Name}.");
+        logger.LogInformation($"Updating Rating: {rating.Id}.");
 
         try
         {
@@ -154,7 +154,7 @@ public class RatingRepository : IRatingRepository
             dbContext.Entry(ratingEntity).State = EntityState.Modified;
             await dbContext.SaveChangesAsync();
 
-            logger.LogInformation($"Rating updated successfully with Name: {rating.Name}.");
+            logger.LogInformation($"Rating updated successfully with Id: {rating.Id}.");
 
             return mapper.Map<RatingDto>(ratingEntity);
         }
