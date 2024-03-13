@@ -1,6 +1,12 @@
 ﻿using FilmForge.Entities.Context;
 using FilmForge.Entities.Initializer;
 using FilmForge.JWT;
+using FilmForge.Repository.ActorRepository;
+using FilmForge.Repository.DirectorRepository;
+using FilmForge.Repository.GenreRepository;
+using FilmForge.Repository.MovieRepository;
+using FilmForge.Repository.RatingRepository;
+using FilmForge.Repository.ReviewRepository;
 using FilmForge.Repository.UserRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -55,9 +61,21 @@ public class Startup
         // Services
         services.AddScoped<ISecurityService, SecurityService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IActorService, ActorService>();
+        services.AddScoped<IDirectorService, DirectorService>();
+        services.AddScoped<IGenreService, GenreService>();
+        services.AddScoped<IMovieService, MovieService>();
+        services.AddScoped<IRatingService, RatingService>();
+        services.AddScoped<IReviewService, ReviewService>();
 
         // Repositories
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IActorRepository, ActorRepository>();
+        services.AddScoped<IDirectorRepository, DirectorRepository>();
+        services.AddScoped<IGenreRepository, GenreRepository>();
+        services.AddScoped<IMovieRepository, MovieRepository>();
+        services.AddScoped<IRatingRepository, RatingRepository>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
 
         services.AddDbContext<FilmForgeDbContext>(options =>
             options.UseSqlServer(
