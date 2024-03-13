@@ -24,7 +24,7 @@ public class ActorService : IActorService
         {
             (actorDto.CreatedOn, actorDto.ModifiedOn) = (DateTime.Now, DateTime.Now);
 
-            logger.LogInformation($"Mapping ActorDto to Actor (Entity) in UserService CreateAsync");
+            logger.LogInformation($"Mapping ActorDto to Actor (Entity) in ActorService CreateAsync");
 
             var actor = mapper.Map<Actor>(actorDto);
 
@@ -52,7 +52,7 @@ public class ActorService : IActorService
     {
         try
         {
-            logger.LogInformation($"Mapping ActorDto to Actor (Entity) in UserService UpdateAsync");
+            logger.LogInformation($"Mapping ActorDto to Actor (Entity) in ActorService UpdateAsync");
             var actor = mapper.Map<Actor>(actorDto);
 
             return await actorRepository.UpdateAsync(id, actor);
