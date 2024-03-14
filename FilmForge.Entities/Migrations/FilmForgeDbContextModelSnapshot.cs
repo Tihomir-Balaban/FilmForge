@@ -132,6 +132,9 @@ namespace FilmForge.Entities.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("Budget")
+                        .HasColumnType("decimal(20,0)");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -145,6 +148,9 @@ namespace FilmForge.Entities.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
