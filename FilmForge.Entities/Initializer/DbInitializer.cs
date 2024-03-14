@@ -1,6 +1,7 @@
 ﻿using FilmForge.Common.Enum;
 using FilmForge.Entities.Context;
 using FilmForge.Entities.EntityModels;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -8,9 +9,18 @@ namespace FilmForge.Entities.Initializer;
 
 public static class DbInitializer
 {
+    private static Actor[] Actors;
+    private static Director[] Directors;
+    private static Genre[] Genres;
+
     public static void Initialize(FilmForgeDbContext dbContext)
     {
         dbContext.Database.EnsureCreated();
+
+        Actors = GenerateInitActors();
+        Directors = GenerateInitDirectors();
+        Genres = GenerateInitGenre();
+
 
         if (!dbContext.Users.Any())
         {
@@ -22,9 +32,7 @@ public static class DbInitializer
 
         if (!dbContext.Genres.Any())
         {
-            var genres = GenerateInitGenre();
-
-            dbContext.Genres.AddRange(genres);
+            dbContext.Genres.AddRange(Genres);
             dbContext.SaveChanges();
         }
 
@@ -37,9 +45,7 @@ public static class DbInitializer
                     .Equals(UserRole.Director))
                     .ToArray();
 
-            var directors = GenerateInitDirectors();
-
-            foreach (var director in directors)
+            foreach (var director in Directors)
             {
                 director.UserId = users
                     .Where(u => u.Name.Equals(director.Name))
@@ -47,7 +53,7 @@ public static class DbInitializer
                     .Id;
             }
 
-            dbContext.Directors.AddRange(directors);
+            dbContext.Directors.AddRange(Directors);
             dbContext.SaveChanges();
         }
 
@@ -60,9 +66,7 @@ public static class DbInitializer
                     .Equals(UserRole.Actor))
                     .ToArray();
 
-            var actors = GenerateInitActors();
-
-            foreach (var actor in actors)
+            foreach (var actor in Actors)
             {
                 actor.UserId = users
                     .Where(u => u.Name.Equals(actor.Name))
@@ -70,7 +74,12 @@ public static class DbInitializer
                     .Id;
             }
 
-            dbContext.Actors.AddRange(actors);
+            dbContext.Actors.AddRange(Actors);
+            dbContext.SaveChanges();
+        }
+        if (!dbContext.Movies.Any())
+        {
+            dbContext.Movies.AddRange(GenerateInitMovies());
             dbContext.SaveChanges();
         }
         else
@@ -165,6 +174,33 @@ public static class DbInitializer
             new Director(){ CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Name = "Bathryn Kigelow", Bio = "", UserId = 0 },
             new Director(){ CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Name = "Ruy Gitchie", Bio = "", UserId = 0 },
             new Director(){ CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Name = "Bichael May", Bio = "", UserId = 0 },
+        };
+    }
+
+    private static Movie[] GenerateInitMovies()
+    {
+        return new[]
+        {
+            new Movie() { Title = "Shadows of the Forgotten", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[0].Id, DirectorId = Directors[0].Id, Actors = new List<Actor>(){ Actors[0], Actors[1] }},
+            new Movie() { Title = "Echoes in the Mist", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[1].Id, DirectorId = Directors[0].Id, Actors = new List<Actor>(){ Actors[0], Actors[1] }},
+            new Movie() { Title = "Whispers of Destiny", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[2].Id, DirectorId = Directors[0].Id, Actors = new List<Actor>(){ Actors[0], Actors[1] }},
+            new Movie() { Title = "The Last Horizon", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[3].Id, DirectorId = Directors[0].Id, Actors = new List<Actor>(){ Actors[0], Actors[1] }},
+            new Movie() { Title = "Beyond the Void", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[4].Id, DirectorId = Directors[1].Id, Actors = new List<Actor>(){ Actors[2], Actors[3] }},
+            new Movie() { Title = "Crimson Twilight", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[5].Id, DirectorId = Directors[1].Id, Actors = new List<Actor>(){ Actors[2], Actors[3] }},
+            new Movie() { Title = "Echoes of Tomorrow", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[6].Id, DirectorId = Directors[1].Id, Actors = new List<Actor>(){ Actors[2], Actors[3] }},
+            new Movie() { Title = "The Veil of Secrets", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[7].Id, DirectorId = Directors[1].Id, Actors = new List<Actor>(){ Actors[2], Actors[3] }},
+            new Movie() { Title = "A Whisper of Truth", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[8].Id, DirectorId = Directors[2].Id, Actors = new List<Actor>(){ Actors[4], Actors[5] }},
+            new Movie() { Title = "The Eternal Dance", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[9].Id, DirectorId = Directors[2].Id, Actors = new List<Actor>(){ Actors[4], Actors[5] }},
+            new Movie() { Title = "Lost in the Echo", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[10].Id, DirectorId = Directors[2].Id, Actors = new List<Actor>(){ Actors[4], Actors[5] }},
+            new Movie() { Title = "Veins of the Earth", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[11].Id, DirectorId = Directors[2].Id, Actors = new List<Actor>(){ Actors[4], Actors[5] }},
+            new Movie() { Title = "The Silent Awakening", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[12].Id, DirectorId = Directors[3].Id, Actors = new List<Actor>(){ Actors[6], Actors[7] }},
+            new Movie() { Title = "Beneath the Starlit Sky", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[13].Id, DirectorId = Directors[3].Id, Actors = new List<Actor>(){ Actors[6], Actors[7] }},
+            new Movie() { Title = "The Unseen Path", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[14].Id, DirectorId = Directors[3].Id, Actors = new List<Actor>(){ Actors[6], Actors[7] }},
+            new Movie() { Title = "Whirlwind of Fate", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[15].Id, DirectorId = Directors[3].Id, Actors = new List<Actor>(){ Actors[6], Actors[7] }},
+            new Movie() { Title = "The Final Reckoning", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[16].Id, DirectorId = Directors[4].Id, Actors = new List<Actor>(){ Actors[8], Actors[9] }},
+            new Movie() { Title = "Flames of Redemption", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[17].Id, DirectorId = Directors[4].Id, Actors = new List<Actor>(){ Actors[8], Actors[9] }},
+            new Movie() { Title = "The Shadows' Embrace", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[18].Id, DirectorId = Directors[4].Id, Actors = new List<Actor>(){ Actors[8], Actors[9] }},
+            new Movie() { Title = "Echoes of the Abyss", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, Budget = 5678165, GenreId = Genres[19].Id, DirectorId = Directors[4].Id, Actors = new List<Actor>(){ Actors[8], Actors[9] }}
         };
     }
 }
