@@ -79,6 +79,55 @@ public class MovieController : ControllerBase
     }
 
     /// <summary>
+    /// Retrieves a movies by their director ID.
+    /// </summary>
+    /// <example>
+    ///     Example of MovieDto in json form
+    ///     {
+    ///         "id": int,
+    ///         "name": string,
+    ///         "email": string,
+    ///         "password": string,
+    ///         "role": int
+    ///     }
+    /// </example>
+    /// <param name="id">The ID of director to retrieve the movies.</param>
+    /// <response code="200">Returns the movies corresponding to the specified director ID</response>
+    /// <response code="400">Returns error message with what happened</response>
+    /// <response code="404">If no movie is found with the specified director ID</response>
+    // GET: /Movie/director/{directorId}
+    [Authorize(Roles = nameof(UserRole.SuperAdministrator) + "," + nameof(UserRole.Director))]
+    [HttpGet("director/{directorId}")]
+    public async Task<ActionResult<MovieDto[]>> GetByDirectorId(int directorId)
+    {
+        logger.LogInformation($"Triggered Endpoint GET: movie/director/{directorId}");
+
+        try
+        {
+            logger.LogInformation("Triggering Movie Service: GetByDirectorIdAsync");
+
+            var movies = await movieService.GetByDirectorIdAsync(directorId);
+
+            if (movies == null)
+            {
+                logger.LogInformation($"Movie with id: {directorId} not found");
+
+                return NotFound(directorId);
+            }
+
+            return Ok(movies);
+        }
+        catch (Exception e)
+        {
+            logger.LogError($"Error caught: {nameof(e.InnerException)}");
+
+            BadRequest(e.Message);
+
+            throw new ApplicationException(e.Message);
+        }
+    }
+
+    /// <summary>
     /// Retrieves a movie by their ID.
     /// </summary>
     /// <example>
