@@ -1,4 +1,8 @@
-﻿namespace FilmForge.Service.Test.UserServiceTests;
+﻿using FilmForge.Entities.EntityModels;
+using FilmForge.Models.Utility;
+using FilmForge.Service.UserService;
+
+namespace FilmForge.Service.Test.UserServiceTests;
 
 public class UserServiceTests : BaseUserServiceTests
 {
@@ -140,5 +144,51 @@ public class UserServiceTests : BaseUserServiceTests
         Assert.NotNull(result);
         Assert.IsType<UserDto>(result);
         UserRepositoryMock.Verify(r => r.UpdateAsync(userId, user), Times.Once);
+    }
+
+    [Fact]
+    public async Task LoginUserAsync_ReturnsUserDto_WhenCredentialsAreValid()
+    {
+        // Arrange
+        var userDto = ArrangeUserDtos(1).FirstOrDefault();
+        var loginRequest = new LoginRequest { Email = userDto.Email, Password = userDto.Password };
+
+        var user = ArrangeUserEntities(1).FirstOrDefault();
+
+        MapperMock
+            .Setup(m => m.Map<User>(It.IsAny<UserDto>()))
+            .Returns(user);
+        
+        UserRepositoryMock
+            .Setup(repo => repo.GetUserByEmailAndPassord(loginRequest.Email, loginRequest.Password))
+            .ReturnsAsync(userDto);
+
+        InitService();
+        // Act
+        var result = await UserService.LoginUserAsync(loginRequest);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(loginRequest.Email, result.Email);
+        UserRepositoryMock.Verify(repo => repo.GetUserByEmailAndPassord(loginRequest.Email, loginRequest.Password), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetUserByEmailAndPassword_ReturnsUserDto_WhenCredentialsAreValid()
+    {
+        // Arrange
+        var userDto = ArrangeUserDtos(1).FirstOrDefault();
+
+        UserRepositoryMock.Setup(repo => repo.GetUserByEmailAndPassord(userDto.Email, userDto.Password))
+                          .ReturnsAsync(userDto);
+
+        InitService();
+        // Act
+        var result = await UserService.GetUserByEmailAndPassord(userDto.Email, userDto.Password);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(userDto.Email, result.Email);
+        UserRepositoryMock.Verify(repo => repo.GetUserByEmailAndPassord(userDto.Email, userDto.Password), Times.Once);
     }
 }

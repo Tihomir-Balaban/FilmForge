@@ -40,4 +40,10 @@ public class BaseMovieServiceTest
             .Generate(amount)
             .ToArray();
     }
+
+    private protected void SetDirectorId(int directorId, params MovieDto[] movies)
+    {
+        foreach (var movie in movies)
+            movie.DirectorId = directorId;
+    }
 }

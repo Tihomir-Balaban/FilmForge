@@ -22,6 +22,7 @@ public class InvitationService : IInvitationService
     {
         this.invitationRepository = invitationRepository;
         this.movieService = movieService;
+        this.actorService = actorService;
         this.logger = logger;
         this.mapper = mapper;
     }

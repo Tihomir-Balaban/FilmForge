@@ -1,3 +1,5 @@
+using FilmForge.Service.MovieService;
+
 namespace FilmForge.Service.Test.MovieServiceTest;
 
 public class MovieServiceTest : BaseMovieServiceTest
@@ -120,5 +122,30 @@ public class MovieServiceTest : BaseMovieServiceTest
         Assert.NotNull(result);
         Assert.IsType<MovieDto>(result);
         MovieRepositoryMock.Verify(r => r.UpdateAsync(movieId, movie), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetByDirectorIdAsync_ReturnsMovieDtos_WhenCalledWithDirectorId()
+    {
+        // Arrange
+        int directorId = 1;
+        var movies = ArrangeMovieDtos(2);
+        SetDirectorId(directorId, movies);
+
+        MovieRepositoryMock.Setup(repo => repo.GetByDirectorIdAsync(directorId))
+                           .ReturnsAsync(movies);
+
+        InitService();
+        // Act
+        var result = await MovieService.GetByDirectorIdAsync(directorId);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(movies.Length, result.Length);
+        foreach (var movie in result)
+        {
+            Assert.Equal(directorId, movie.DirectorId);
+        }
+        MovieRepositoryMock.Verify(repo => repo.GetByDirectorIdAsync(directorId), Times.Once);
     }
 }

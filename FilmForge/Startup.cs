@@ -4,10 +4,12 @@ using FilmForge.JWT;
 using FilmForge.Repository.ActorRepository;
 using FilmForge.Repository.DirectorRepository;
 using FilmForge.Repository.GenreRepository;
+using FilmForge.Repository.InvitationRepository;
 using FilmForge.Repository.MovieRepository;
 using FilmForge.Repository.RatingRepository;
 using FilmForge.Repository.ReviewRepository;
 using FilmForge.Repository.UserRepository;
+using FilmForge.Service.InvitationService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -64,6 +66,7 @@ public class Startup
         services.AddScoped<IActorService, ActorService>();
         services.AddScoped<IDirectorService, DirectorService>();
         services.AddScoped<IGenreService, GenreService>();
+        services.AddScoped<IInvitationService, InvitationService>();
         services.AddScoped<IMovieService, MovieService>();
         services.AddScoped<IRatingService, RatingService>();
         services.AddScoped<IReviewService, ReviewService>();
@@ -73,6 +76,7 @@ public class Startup
         services.AddScoped<IActorRepository, ActorRepository>();
         services.AddScoped<IDirectorRepository, DirectorRepository>();
         services.AddScoped<IGenreRepository, GenreRepository>();
+        services.AddScoped<IInvitationRepository, InvitationRepository>();
         services.AddScoped<IMovieRepository, MovieRepository>();
         services.AddScoped<IRatingRepository, RatingRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
