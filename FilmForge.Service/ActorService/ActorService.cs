@@ -1,19 +1,27 @@
 using FilmForge.Repository.ActorRepository;
+using FilmForge.Repository.MovieRepository;
+using FilmForge.Models.Statics.ActorDto;
+using Microsoft.EntityFrameworkCore;
+using FilmForge.Models.Dtos;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FilmForge.Service.ActorService;
 
 public class ActorService : IActorService
 {
     private readonly IActorRepository actorRepository;
+    private readonly IMovieRepository movieRepository;
     private readonly ILogger<ActorService> logger;
     private readonly IMapper mapper;
 
     public ActorService(
         IActorRepository actorRepository,
+        IMovieRepository movieRepository,
         ILogger<ActorService> logger,
         IMapper mapper)
     {
         this.actorRepository = actorRepository;
+        this.movieRepository = movieRepository;
         this.logger = logger;
         this.mapper = mapper;
     }
@@ -52,6 +60,15 @@ public class ActorService : IActorService
     {
         try
         {
+            var actorDbDto = await actorRepository.GetByIdAsync(id);
+
+            if (actorDbDto != null && !actorDbDto.Fee.Equals(actorDto.Fee))
+            {
+                var movieDto = await movieRepository.GetMovieByActorIdAsync(id);
+
+                UpdateActorFeeAndValidate(movieDto, actorDto.Id, actorDto.Fee);
+            }
+
             logger.LogInformation($"Mapping ActorDto to Actor (Entity) in ActorService UpdateAsync");
             var actor = mapper.Map<Actor>(actorDto);
 
@@ -62,6 +79,34 @@ public class ActorService : IActorService
             logger.LogError(e, $"Failed to map Actor. Error: {e.Message}.");
 
             throw new ApplicationException(e.Message);
+        }
+    }
+
+    private void UpdateActorFeeAndValidate(MovieDto movieDto, int id, ulong fee)
+    {
+        var actorsDtos = new List<ActorDto>();
+
+        var actorDto = movieDto
+            .Actors
+            .Where(a => a.Id.Equals(id))
+            .FirstOrDefault();
+
+        var actorDtosNotChanged = movieDto
+            .Actors
+            .Where(a => !a.Id.Equals(id));
+
+        actorDto.Fee = fee;
+
+        actorsDtos.Add(actorDto);
+        actorsDtos.AddRange(actorDtosNotChanged);
+
+        movieDto.Actors = actorsDtos;
+
+        if (!movieDto.Actors.IsNullOrEmpty() && !movieDto.CheckMovieBugeting())
+        {
+            logger.LogWarning("Movie will be overbudget");
+
+            throw new ApplicationException("Movie is overbudget");
         }
     }
 }

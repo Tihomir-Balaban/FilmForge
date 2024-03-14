@@ -1,5 +1,6 @@
 using FilmForge.Models.Statics.MovieDto;
 using FilmForge.Repository.MovieRepository;
+using Microsoft.IdentityModel.Tokens;
 using System.Linq;
 
 namespace FilmForge.Service.MovieService;
@@ -24,6 +25,12 @@ public class MovieService : IMovieService
     {
         try
         {
+            if (!movieDto.Actors.IsNullOrEmpty() && !movieDto.CheckMovieBugeting())
+            {
+                logger.LogWarning("Movie will be overbudget");
+
+                throw new ApplicationException("Movie is overbudget");
+            }
 
             (movieDto.CreatedOn, movieDto.ModifiedOn) = (DateTime.Now, DateTime.Now);
 
@@ -58,7 +65,7 @@ public class MovieService : IMovieService
     {
         try
         {
-            if (!movieDto.CheckMovieBugeting())
+            if (!movieDto.Actors.IsNullOrEmpty() && !movieDto.CheckMovieBugeting())
             {
                 logger.LogWarning("Movie is overbudget");
 

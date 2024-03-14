@@ -69,7 +69,7 @@ public class InvitationService : IInvitationService
     {
         try
         {
-            if (!await ValidateBudgetAfterInviteAsync(invitationDto))
+            if (invitationDto.HasAccepted.Equals(true) && !await ValidateBudgetAfterInviteAsync(invitationDto))
             {
                 logger.LogWarning("Movie will be overbudget");
 

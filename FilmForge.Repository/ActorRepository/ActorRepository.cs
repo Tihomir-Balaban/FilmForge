@@ -1,3 +1,5 @@
+using FilmForge.Models.Dtos;
+
 namespace FilmForge.Repository.ActorRepository;
 
 public class ActorRepository : IActorRepository

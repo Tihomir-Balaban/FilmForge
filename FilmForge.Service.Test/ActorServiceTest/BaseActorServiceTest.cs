@@ -1,4 +1,5 @@
 using FilmForge.Repository.ActorRepository;
+using FilmForge.Repository.MovieRepository;
 using AS = FilmForge.Service.ActorService;
 
 namespace FilmForge.Service.Test.ActorServiceTest;
@@ -7,6 +8,7 @@ namespace FilmForge.Service.Test.ActorServiceTest;
 public class BaseActorServiceTest
 {
     protected readonly Mock<IActorRepository> ActorRepositoryMock = new();
+    protected readonly Mock<IMovieRepository> MovieRepositoryMock = new();
     protected readonly Mock<ILogger<AS.ActorService>> LoggerMock = new();
     protected readonly Mock<IMapper> MapperMock = new();
 
@@ -16,6 +18,7 @@ public class BaseActorServiceTest
     {
         ActorService = new(
             ActorRepositoryMock.Object,
+            MovieRepositoryMock.Object,
             LoggerMock.Object,
             MapperMock.Object);
     }

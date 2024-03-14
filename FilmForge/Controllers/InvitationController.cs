@@ -145,6 +145,7 @@ public class InvitationController : Controller
     ///     {
     ///  		"id": int,
     ///  		"hasAccepted ": boolean,
+    ///  		"InvitationType": int,
     ///  		"actorId": int,
     ///  		"actor":
     ///  		{
@@ -162,7 +163,9 @@ public class InvitationController : Controller
     /// <response code="400">Returns error message with what happened</response>
     /// <response code="401">Returns when invitation not authorized to use this endpoint</response>
     // POST: /Invitation/add
-    [Authorize(Roles = nameof(UserRole.SuperAdministrator) + "" + nameof(UserRole.Director))]
+    [Authorize(Roles = 
+        nameof(UserRole.SuperAdministrator) + "," + 
+        nameof(UserRole.Director))]
     [HttpPost("add")]
     public async Task<ActionResult<InvitationDto>> CreateInvitation([FromBody] InvitationDto invitationDto)
     {
@@ -204,6 +207,7 @@ public class InvitationController : Controller
     ///     {
     ///  		"id": int,
     ///  		"hasAccepted ": boolean,
+    ///  		"InvitationType": int,
     ///  		"actorId": int,
     ///  		"actor":
     ///  		{
@@ -222,7 +226,7 @@ public class InvitationController : Controller
     /// <response code="400">If the ID does not match the invitationDto ID or some other error message with what happened</response>
     /// <response code="401">Returns when invitation not authorized to use this endpoint</response>
     // PUT: /Invitation/update/{id}
-    [Authorize(Roles = nameof(UserRole.SuperAdministrator) + "" + nameof(UserRole.Director) + "" + nameof(UserRole.Actor))]
+    [Authorize()]
     [HttpPut("update/{id}")]
     public async Task<ActionResult<InvitationDto>> UpdateInvitation(int id, [FromBody] InvitationDto invitationDto)
     {
@@ -262,7 +266,7 @@ public class InvitationController : Controller
     /// <response code="400">Returns error message with what happened</response>
     /// <response code="401">Returns when invitation not authorized to use this endpoint</response>
     // DELETE: /Invitation/delete/{id}
-    [Authorize(Roles = nameof(UserRole.SuperAdministrator) + "" + nameof(UserRole.Director))]
+    [Authorize()]
     [HttpDelete("delete/{id}")]
     public async Task<ActionResult<bool>> DeleteInvitation(int id)
     {

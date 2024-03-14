@@ -1,4 +1,5 @@
 ﻿using FilmForge.Models.Dtos;
+using FilmForge.Models.Statics;
 using FilmForge.Repository.ActorRepository;
 
 namespace FilmForge.Repository.MovieRepository;
@@ -202,6 +203,35 @@ public class MovieRepository : IMovieRepository
         catch (Exception e)
         {
             logger.LogError(e, $"Failed to update Movie. Error: {e.Message}.");
+
+            throw new ApplicationException(e.Message);
+        }
+    }
+
+    public async Task<MovieDto> GetMovieByActorIdAsync(int id)
+    {
+        try
+        {
+            logger.LogInformation($"Getting movies of this actor by id {id}");
+
+            var movie = await dbContext
+                .Actors
+                .Where(m => m.Id == id)
+                .SelectMany(m => m.Movies)
+                .FirstOrDefaultAsync();
+
+            if (DateTime.Now.IsDateBetween(movie.StartDate, movie.ReleaseDate))
+            {
+                logger.LogWarning($"Movie {movie.Title} is in Production and Actor is locked in");
+
+                throw new ApplicationException($"Movie {movie.Title} is in Production and Actor is locked in");
+            }
+
+            return mapper.Map<MovieDto>(movie);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, $"Failed to find Movie with Actor id {id}. Error: {e.Message}.");
 
             throw new ApplicationException(e.Message);
         }

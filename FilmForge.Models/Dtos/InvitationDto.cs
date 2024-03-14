@@ -8,7 +8,7 @@ namespace FilmForge.Models.Dtos
         public DateTime CreatedOn { get; set; }
         public DateTime ModifiedOn { get; set; }
         public bool HasAccepted { get; set; }
-        public InvitationType invitationType { get; set; }
+        public InvitationType InvitationType { get; set; }
 
         public int MovieId { get; set; }
         public MovieDto Movie { get; set; }
