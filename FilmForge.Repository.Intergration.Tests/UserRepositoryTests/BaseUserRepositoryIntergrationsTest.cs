@@ -8,7 +8,7 @@ namespace FilmForge.Repository.Intergration.Tests.UserRepositoryTests
 {
     public class BaseUserRepositoryIntergrationsTest<T> : BaseRepositoryIntergrationsTest<T>, IIntergrationTests
     {
-        private protected readonly Mock<ILogger<UR.UserRepository>> LoggerMock = new();
+        private protected readonly Mock<ILogger<T>> LoggerMock = new();
 
         public BaseUserRepositoryIntergrationsTest()
             : base()
