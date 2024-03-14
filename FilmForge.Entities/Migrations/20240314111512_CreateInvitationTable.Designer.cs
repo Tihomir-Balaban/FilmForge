@@ -4,6 +4,7 @@ using FilmForge.Entities.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmForge.Entities.Migrations
 {
     [DbContext(typeof(FilmForgeDbContext))]
-    partial class FilmForgeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240314111512_CreateInvitationTable")]
+    partial class CreateInvitationTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,9 +54,6 @@ namespace FilmForge.Entities.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Fee")
-                        .HasColumnType("decimal(20,0)");
 
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime2");

@@ -14,4 +14,5 @@ public class FilmForgeDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Rating> Ratings { get; set; }
     public DbSet<Review> Reviews { get; set; }
+    public DbSet<Invitation> Invitations { get; set; }
 }
