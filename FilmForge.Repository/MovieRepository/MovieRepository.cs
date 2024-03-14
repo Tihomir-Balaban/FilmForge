@@ -100,6 +100,36 @@ public class MovieRepository : IMovieRepository
         }
     }
 
+    public async Task<MovieDto[]> GetByDirectorIdAsync(int directorId)
+    {
+        logger.LogInformation($"Getting Movie('s) with director id: {directorId}.");
+
+        try
+        {
+            var movies = await dbContext
+                .Movies
+                .Where(m => m.DirectorId == directorId)
+                .ToArrayAsync();
+
+            if (movies == null)
+            {
+                logger.LogWarning($"Movie('s) with director id: {directorId} not found.");
+
+                return null;
+            }
+
+            logger.LogInformation($"{movies.Count()} Movie('s) found successfully.");
+
+            return mapper.Map<MovieDto[]>(movies);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, $"Failed to find Movie('s) with director id: {directorId}. Error: {e.Message}.");
+
+            throw new ApplicationException(e.Message);
+        }
+    }
+
     public async Task<MovieDto> GetByIdAsync(int id)
     {
         logger.LogInformation($"Getting Movie with id: {id}.");
