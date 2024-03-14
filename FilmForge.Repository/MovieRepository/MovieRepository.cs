@@ -123,10 +123,9 @@ public class MovieRepository : IMovieRepository
 
             logger.LogInformation($"{movies.Count()} Movie('s) found successfully.");
 
-            var movieDtos = mapper
-                .Map<MovieDto[]>(movies);
+            var movieDtos = mapper.Map<MovieDto[]>(movies);
 
-            GetActorsForMovies(ref movieDtos);
+            GetActorsForMovies(movieDtos);
 
             return movieDtos;
         }
@@ -157,7 +156,11 @@ public class MovieRepository : IMovieRepository
 
             logger.LogInformation($"Movie found successfully with Id: {movie.Id} and Name: {movie.Title}.");
 
-            return mapper.Map<MovieDto>(movie);
+            var movieDto = mapper.Map<MovieDto>(movie);
+
+            GetActorsForMovies(movieDto);
+
+            return movieDto;
         }
         catch (Exception e)
         {
@@ -204,7 +207,7 @@ public class MovieRepository : IMovieRepository
         }
     }
 
-    private void GetActorsForMovies(ref MovieDto[] movieDtos)
+    private void GetActorsForMovies(params MovieDto[] movieDtos)
     {
         logger.LogInformation($"Getting actors of these movies");
 
