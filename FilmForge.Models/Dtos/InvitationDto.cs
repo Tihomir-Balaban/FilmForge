@@ -1,3 +1,5 @@
+using FilmForge.Common.Enum;
+
 namespace FilmForge.Models.Dtos
 {
     public class InvitationDto
@@ -6,6 +8,7 @@ namespace FilmForge.Models.Dtos
         public DateTime CreatedOn { get; set; }
         public DateTime ModifiedOn { get; set; }
         public bool HasAccepted { get; set; }
+        public InvitationType invitationType { get; set; }
 
         public int MovieId { get; set; }
         public MovieDto Movie { get; set; }
