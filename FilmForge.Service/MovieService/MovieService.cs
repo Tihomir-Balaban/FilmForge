@@ -45,6 +45,9 @@ public class MovieService : IMovieService
     public async Task<MovieDto[]> GetAllAsync()
         => await movieRepository.GetAllAsync();
 
+    public async Task<MovieDto[]> GetByDirectorIdAsync(int directorId)
+        => await movieRepository.GetByDirectorIdAsync(directorId);
+
     public async Task<MovieDto> GetByIdAsync(int id)
         => await movieRepository.GetByIdAsync(id);
 
