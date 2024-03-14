@@ -1,4 +1,6 @@
+using FilmForge.Models.Statics.MovieDto;
 using FilmForge.Repository.MovieRepository;
+using System.Linq;
 
 namespace FilmForge.Service.MovieService;
 
@@ -22,6 +24,7 @@ public class MovieService : IMovieService
     {
         try
         {
+
             (movieDto.CreatedOn, movieDto.ModifiedOn) = (DateTime.Now, DateTime.Now);
 
             logger.LogInformation($"Mapping MovieDto to Movie (Entity) in MovieService CreateAsync");
@@ -55,6 +58,13 @@ public class MovieService : IMovieService
     {
         try
         {
+            if (!movieDto.CheckMovieBugeting())
+            {
+                logger.LogWarning("Movie is overbudget");
+
+                throw new ApplicationException("Movie is overbudget");
+            }
+
             logger.LogInformation($"Mapping MovieDto to Movie (Entity) in MovieService UpdateAsync");
             var movie = mapper.Map<Movie>(movieDto);
 

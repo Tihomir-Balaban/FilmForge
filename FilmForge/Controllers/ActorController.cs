@@ -1,8 +1,5 @@
 ﻿using FilmForge.Common.Enum;
-using FilmForge.Models.Utility;
-using FilmForge.Service.ActorService;
 using Microsoft.AspNetCore.Authorization;
-using Service.Security;
 
 namespace FilmForge.Controllers;
 
@@ -248,7 +245,7 @@ public class ActorController : ControllerBase
     /// <response code="400">If the ID does not match the actorDto ID or some other error message with what happened</response>
     /// <response code="401">Returns when actor not authorized to use this endpoint</response>
     // PUT: /Actor/update/{id}
-    [Authorize(Roles = nameof(UserRole.SuperAdministrator))]
+    [Authorize(Roles = nameof(UserRole.SuperAdministrator) + "" +  nameof(UserRole.Actor))]
     [HttpPut("update/{id}")]
     public async Task<ActionResult<ActorDto>> UpdateActor(int id, [FromBody] ActorDto actorDto)
     {

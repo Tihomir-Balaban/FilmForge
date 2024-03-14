@@ -194,7 +194,7 @@ public class MovieController : ControllerBase
     /// <response code="400">Returns error message with what happened</response>
     /// <response code="401">Returns when movie not authorized to use this endpoint</response>
     // POST: /Movie/add
-    [Authorize(Roles = nameof(UserRole.SuperAdministrator))]
+    [Authorize(Roles = nameof(UserRole.SuperAdministrator) + ", " + nameof(UserRole.Director))]
     [HttpPost("add")]
     public async Task<ActionResult<MovieDto>> CreateMovie([FromBody] MovieDto movieDto)
     {
@@ -247,7 +247,7 @@ public class MovieController : ControllerBase
     /// <response code="400">If the ID does not match the movieDto ID or some other error message with what happened</response>
     /// <response code="401">Returns when movie not authorized to use this endpoint</response>
     // PUT: /Movie/update/{id}
-    [Authorize(Roles = nameof(UserRole.SuperAdministrator))]
+    [Authorize(Roles = nameof(UserRole.SuperAdministrator) + "," + nameof(UserRole.Director))]
     [HttpPut("update/{id}")]
     public async Task<ActionResult<MovieDto>> UpdateMovie(int id, [FromBody] MovieDto movieDto)
     {
@@ -287,7 +287,7 @@ public class MovieController : ControllerBase
     /// <response code="400">Returns error message with what happened</response>
     /// <response code="401">Returns when movie not authorized to use this endpoint</response>
     // DELETE: /Movie/delete/{id}
-    [Authorize(Roles = nameof(UserRole.SuperAdministrator))]
+    [Authorize(Roles = nameof(UserRole.SuperAdministrator) + "," + nameof(UserRole.Director))]
     [HttpDelete("delete/{id}")]
     public async Task<ActionResult<bool>> DeleteMovie(int id)
     {

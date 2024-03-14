@@ -6,6 +6,7 @@ public class Actor : BaseEntity
 {
     public string Name { get; set; }
     public string Bio { get; set; }
+    public ulong Fee { get; set; }
     public int UserId { get; set; }
     public User User { get; set; }
 

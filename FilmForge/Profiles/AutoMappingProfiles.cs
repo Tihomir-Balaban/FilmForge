@@ -31,6 +31,9 @@ public class AutoMappingProfiles : Profile
 
         CreateMap<ReviewDto, Review>()
            .ReverseMap();
+
+        CreateMap<InvitationDto, Invitation>()
+           .ReverseMap();
     }
 
     private void CreateDto2EntityMaps()
