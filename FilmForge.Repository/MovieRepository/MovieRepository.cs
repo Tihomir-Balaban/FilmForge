@@ -1,4 +1,7 @@
-﻿namespace FilmForge.Repository.MovieRepository;
+﻿using FilmForge.Models.Dtos;
+using FilmForge.Repository.ActorRepository;
+
+namespace FilmForge.Repository.MovieRepository;
 
 public class MovieRepository : IMovieRepository
 {
@@ -120,7 +123,12 @@ public class MovieRepository : IMovieRepository
 
             logger.LogInformation($"{movies.Count()} Movie('s) found successfully.");
 
-            return mapper.Map<MovieDto[]>(movies);
+            var movieDtos = mapper
+                .Map<MovieDto[]>(movies);
+
+            GetActorsForMovies(ref movieDtos);
+
+            return movieDtos;
         }
         catch (Exception e)
         {
@@ -193,6 +201,22 @@ public class MovieRepository : IMovieRepository
             logger.LogError(e, $"Failed to update Movie. Error: {e.Message}.");
 
             throw new ApplicationException(e.Message);
+        }
+    }
+
+    private void GetActorsForMovies(ref MovieDto[] movieDtos)
+    {
+        logger.LogInformation($"Getting actors of these movies");
+
+        foreach (var movieDto in movieDtos)
+        {
+            var actors = dbContext
+                .Movies
+                .Where(m => m.Id == movieDto.Id)
+                .SelectMany(m => m.Actors)
+                .ToArray();
+
+            movieDto.Actors = mapper.Map<ActorDto[]>(actors);
         }
     }
 }
