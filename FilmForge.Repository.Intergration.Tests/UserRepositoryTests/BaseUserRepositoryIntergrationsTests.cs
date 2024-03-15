@@ -2,16 +2,15 @@ using FilmForge.Common.Enum;
 using FilmForge.Repository.Intergration.Tests.Base;
 using System.Security.Cryptography;
 using System.Text;
-using UR = FilmForge.Repository.UserRepository;
 
 namespace FilmForge.Repository.Intergration.Tests.UserRepositoryTests
 {
-    public class BaseUserRepositoryIntergrationsTest<T> : BaseRepositoryIntergrationsTest<T>, IIntergrationTests
+    public class BaseUserRepositoryIntergrationsTests<T> : BaseRepositoryIntergrationsTest<T>
     {
-        public BaseUserRepositoryIntergrationsTest()
+        public BaseUserRepositoryIntergrationsTests()
             : base()
         {
-            PopulateTestData();
+            GenerateUsers();
         }
 
         public void PopulateTestData()

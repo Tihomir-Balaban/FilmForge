@@ -35,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ActorRepositoryTests\" />
     <Folder Include="DirectorRepositoryTests\" />
     <Folder Include="GenreRepositoryTests\" />
     <Folder Include="MovieRepositoryTest\" />

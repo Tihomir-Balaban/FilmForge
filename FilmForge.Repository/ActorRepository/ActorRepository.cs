@@ -153,7 +153,6 @@ public class ActorRepository : IActorRepository
 
             actorEntity = mapper.Map<Actor>(actor);
 
-            dbContext.Entry(actorEntity).State = EntityState.Modified;
             await dbContext.SaveChangesAsync();
 
             logger.LogInformation($"Actor updated successfully with Name: {actor.Name}.");
